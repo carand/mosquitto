@@ -71,7 +71,7 @@ WITH_WEBSOCKETS:=no
 WITH_EC:=yes
 
 # Build man page documentation by default.
-WITH_DOCS:=yes
+WITH_DOCS:=no
 
 # Build with client support for SOCK5 proxy.
 WITH_SOCKS:=yes
@@ -125,10 +125,10 @@ UNAME:=$(shell uname -s)
 
 ifeq ($(UNAME),SunOS)
 	ifeq ($(CC),cc)
-		CFLAGS?=-O
-	else
-		CFLAGS?=-Wall -ggdb -O2
-	endif
+	CFLAGS?=-O
+else
+	CFLAGS?=-Wall -ggdb -O2
+endif
 else
 	CFLAGS?=-Wall -ggdb -O2
 endif
@@ -176,16 +176,16 @@ endif
 
 ifeq ($(UNAME),SunOS)
 	ifeq ($(CC),cc)
-		LIB_CFLAGS:=$(LIB_CFLAGS) -xc99 -KPIC
-	else
-		LIB_CFLAGS:=$(LIB_CFLAGS) -fPIC
-	endif
+	LIB_CFLAGS:=$(LIB_CFLAGS) -xc99 -KPIC
+else
+	LIB_CFLAGS:=$(LIB_CFLAGS) -fPIC
+endif
 
-	ifeq ($(CXX),CC)
-		LIB_CXXFLAGS:=$(LIB_CXXFLAGS) -KPIC
-	else
-		LIB_CXXFLAGS:=$(LIB_CXXFLAGS) -fPIC
-	endif
+ifeq ($(CXX),CC)
+	LIB_CXXFLAGS:=$(LIB_CXXFLAGS) -KPIC
+else
+	LIB_CXXFLAGS:=$(LIB_CXXFLAGS) -fPIC
+endif
 else
 	LIB_CFLAGS:=$(LIB_CFLAGS) -fPIC
 	LIB_CXXFLAGS:=$(LIB_CXXFLAGS) -fPIC
@@ -214,11 +214,11 @@ ifeq ($(WITH_TLS),yes)
 	CLIENT_CPPFLAGS:=$(CLIENT_CPPFLAGS) -DWITH_TLS
 	STATIC_LIB_DEPS:=$(STATIC_LIB_DEPS) -lssl -lcrypto
 
-	ifeq ($(WITH_TLS_PSK),yes)
-		BROKER_CPPFLAGS:=$(BROKER_CPPFLAGS) -DWITH_TLS_PSK
-		LIB_CPPFLAGS:=$(LIB_CPPFLAGS) -DWITH_TLS_PSK
-		CLIENT_CPPFLAGS:=$(CLIENT_CPPFLAGS) -DWITH_TLS_PSK
-	endif
+ifeq ($(WITH_TLS_PSK),yes)
+	BROKER_CPPFLAGS:=$(BROKER_CPPFLAGS) -DWITH_TLS_PSK
+	LIB_CPPFLAGS:=$(LIB_CPPFLAGS) -DWITH_TLS_PSK
+	CLIENT_CPPFLAGS:=$(CLIENT_CPPFLAGS) -DWITH_TLS_PSK
+endif
 endif
 
 ifeq ($(WITH_THREADING),yes)
@@ -243,8 +243,8 @@ endif
 
 ifeq ($(WITH_MEMORY_TRACKING),yes)
 	ifneq ($(UNAME),SunOS)
-		BROKER_CPPFLAGS:=$(BROKER_CPPFLAGS) -DWITH_MEMORY_TRACKING
-	endif
+	BROKER_CPPFLAGS:=$(BROKER_CPPFLAGS) -DWITH_MEMORY_TRACKING
+endif
 endif
 
 ifeq ($(WITH_SYS_TREE),yes)
@@ -306,8 +306,8 @@ endif
 
 ifeq ($(WITH_EPOLL),yes)
 	ifeq ($(UNAME),Linux)
-		BROKER_CPPFLAGS:=$(BROKER_CPPFLAGS) -DWITH_EPOLL
-	endif
+	BROKER_CPPFLAGS:=$(BROKER_CPPFLAGS) -DWITH_EPOLL
+endif
 endif
 
 ifeq ($(WITH_BUNDLED_DEPS),yes)
