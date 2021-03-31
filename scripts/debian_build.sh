@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+echo "clean mosquitto"
+make realyclean
 echo "building mosquitto"
 cd /root/mosquitto || exit
 make dist
